@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #-----------------------------------------
 # Google translate fix for LaTeX documents
 # Copyright (c) Dmitry R. Gulevich 2020
@@ -91,7 +91,8 @@ with open('gtexfix_latex', 'wb') as fp:
 ### Replace LaTeX commands, formulas and comments by tokens
 # Regular expression r'(\$+)(?:(?!\1)[\s\S])*\1' for treatment of $...$ and $$...$$ from:
 # https://stackoverflow.com/questions/54663900/how-to-use-regular-expression-to-remove-all-math-expression-in-latex-file
-recommand = re.compile(r'___GTEXFIXCOMMENT[0-9]*___|\\title|\\chapter\**|\\section\**|\\subsection\**|\\subsubsection\**|~*\\footnote[0-9]*|(\$+)(?:(?!\1)[\s\S])*\1|~*\\\w*\s*{[^}]*}\s*{[^}]*}|~*\\\w*\s*{[^}]*}|~*\\\w*')
+# recommand = re.compile(r'___GTEXFIXCOMMENT[0-9]*___|\\title|\\chapter\**|\\section\**|\\subsection\**|\\subsubsection\**|~*\\footnote[0-9]*|(\$+)(?:(?!\1)[\s\S])*\1|~*\\\w*\s*{[^}]*}\s*{[^}]*}|~*\\\w*\s*{[^}]*}|~*\\\w*')
+recommand = re.compile(r'___GTEXFIXCOMMENT[0-9]*___|\\title|\\chapter\**|\\section\**|\\subsection\**|\\subsubsection\**|~*\\footnote[0-9]*|\\includegraphics\[.*?\]{.*?}|(\$+)(?:(?!\1)[\s\S])*\1|~*\\\w*\s*{[^}]*}\s*{[^}]*}|~*\\\w*\s*{[^}]*}|~*\\\w*')
 commands=[]
 for m in recommand.finditer(text):
     commands.append(m.group())
@@ -105,7 +106,7 @@ with open('gtexfix_commands', 'wb') as fp:
     pickle.dump(commands, fp)
 
 ### Save the processed output to .txt file
-limit=30000 # Estimated Google Translate character limit
+limit=5000 # Estimated Google Translate character limit
 filebase = re.sub('.tex$','',args.filename)
 start=0
 npart=0

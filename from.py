@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #-----------------------------------------
 # Google translate fix for LaTeX documents
 # Copyright (c) Dmitry R. Gulevich 2020
@@ -8,6 +8,7 @@ import re
 import sys
 import pickle
 import argparse
+from pylatexenc import latexencode
 
 parser = argparse.ArgumentParser()
 parser.add_argument('filename')
@@ -35,6 +36,8 @@ trtext=re.sub('\u200B',' ',source)
 trtext = re.sub(r'\\ ',r'\\',trtext)
 trtext = re.sub(' ~ ','~',trtext)
 trtext = re.sub(' {','{',trtext)
+
+trtext = latexencode.unicode_to_latex(trtext,non_ascii_only=True, replacement_latex_protection='braces')
 
 ### Restore LaTeX and formulas
 here=0
